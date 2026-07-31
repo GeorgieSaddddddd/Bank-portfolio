@@ -4,8 +4,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, AnimatePresence } from 'framer-motion';
-// นำเข้า MapPin เพิ่มสำหรับไอคอนแผนที่
-import { Mail, MapPin, ArrowUpRight, Code2, Cpu, Database, Send, GraduationCap, Award, ExternalLink, FolderGit2, Layers, X, Medal, LayoutGrid, ArrowRight, Sparkles, Server, Activity, ShieldCheck, PlayCircle } from 'lucide-react';
+import { Mail, ArrowUpRight, Code2, Cpu, Database, Send, GraduationCap, Award, ExternalLink, FolderGit2, Layers, X, Medal, LayoutGrid, ArrowRight, Sparkles, Server, Activity, ShieldCheck, PlayCircle, MapPin } from 'lucide-react';
 
 // --- Custom Social Icons ---
 const GithubIcon = ({ size = 18 }) => (
@@ -21,7 +20,8 @@ const InstagramIcon = ({ size = 18 }) => (
 const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
-    html { scroll-padding-top: 100px; }
+    /* ลบ scroll-padding-top ทิ้ง เพื่อให้เลื่อนชนขอบ Section พอดีเป๊ะ */
+    html { scroll-behavior: smooth; }
     body { font-family: 'Plus Jakarta Sans', 'Noto Sans Thai', sans-serif; background-color: #FAFAFA; color: #171717; overflow-x: hidden; }
     .bg-grid-pattern { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px); }
     ::selection { background-color: #10B981; color: #ffffff; }
@@ -41,7 +41,7 @@ const GlobalStyles = () => (
     /* Scrollbar for modal */
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #d4d4d8; border-radius: 20px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #3f3f46; border-radius: 20px; }
   `}</style>
 );
 
@@ -52,7 +52,8 @@ const Navbar = () => {
     e.preventDefault();
     const element = document.getElementById(sectionId);
     if (element) {
-      const offsetTop = element.getBoundingClientRect().top + window.scrollY - 80;
+      // แก้ไขการเลื่อนให้จับพิกัดขอบบนสุดของ Section นั้นๆ แบบเป๊ะๆ
+      const offsetTop = element.offsetTop;
       window.scrollTo({ top: offsetTop, behavior: 'smooth' });
       setActiveSection(sectionId);
     }
@@ -82,7 +83,7 @@ const Navbar = () => {
       <div className="max-w-5xl mx-auto px-6 flex justify-center items-center">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 p-1.5 rounded-full border shadow-[0_4px_20px_-5px_rgba(0,0,0,0.1)] bg-white/80 backdrop-blur-xl border-neutral-200/60">
-            {[{ id: 'home', label: 'หน้าแรก' }, { id: 'about', label: 'เกี่ยวกับ' }, { id: 'projects', label: 'ผลงาน' }, { id: 'contact', label: 'ติดต่อ' }].map((item) => (
+            {[{ id: 'home', label: 'Home' }, { id: 'about', label: 'About' }, { id: 'projects', label: 'Portfolio' }, { id: 'contact', label: 'Contact' }].map((item) => (
               <button 
                 key={item.id} onClick={(e) => scrollToSection(e, item.id)}
                 className={`relative px-5 py-2 text-sm font-medium rounded-full transition-colors cursor-pointer ${activeSection === item.id ? 'text-emerald-900' : 'text-neutral-500 hover:text-emerald-600'}`}
@@ -123,7 +124,7 @@ const InteractiveBadge = () => {
         </div>
         <div className="w-full h-full relative z-20 overflow-hidden rounded-xl shadow-inner border border-neutral-100">
           <div className="absolute inset-0 bg-emerald-500/10 mix-blend-color z-10 pointer-events-none"></div>
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="Profile" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+          <img src="\images\profile-main.jpg" alt="Profile" draggable="false" className="w-full h-full object-cover pointer-events-none" />
         </div>
       </motion.div>
     </div>
@@ -164,18 +165,22 @@ export default function App() {
   const [selectedCert, setSelectedCert] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
-  // เพิ่ม useEffect ตัวนี้เข้าไปเพื่อบังคับให้กลับไปบนสุดเวลารีเฟรช
+  // บังคับกลับไปบนสุดเวลารีเฟรช
   useEffect(() => {
-    // ปิดการจำตำแหน่ง scroll ของบราวเซอร์
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    // เลื่อนกลับไปจุดบนสุด
     window.scrollTo(0, 0);
   }, []);
 
   const scrollToContact = (e: any) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); };
-  const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); };
+  const scrollToProjects = (e: any) => { 
+    e.preventDefault(); 
+    const element = document.getElementById('projects');
+    if (element) {
+        window.scrollTo({ top: element.offsetTop, behavior: 'smooth' });
+    }
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault(); setIsSubmitting(true);
@@ -187,13 +192,21 @@ export default function App() {
     } catch (error) { console.error(error); } finally { setIsSubmitting(false); }
   };
 
+  // ตัวแปรสำหรับคลาสสี Tailwind เพื่อแก้ปัญหาสีไม่แสดง
+  const themeColors: any = {
+    emerald: { text: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-500/30", hover: "group-hover:text-emerald-400" },
+    blue: { text: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-500/30", hover: "group-hover:text-blue-400" },
+    amber: { text: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-500/30", hover: "group-hover:text-amber-400" },
+    violet: { text: "text-violet-400", bg: "bg-violet-400/10", border: "border-violet-500/30", hover: "group-hover:text-violet-400" }
+  };
+
   const mockCertificates = [
-    { id: 1, title: "Software Development with ChatGPT", issuer: "Coursera", img: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800" },
-    { id: 2, title: "Cybersecurity Foundation", issuer: "NCSA", img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" },
-    { id: 3, title: "AWS Certified AI Practitioner", issuer: "AWS Training & Certification", img: "https://images.unsplash.com/photo-1523580846011-d3a5ce259640?auto=format&fit=crop&q=80&w=800" },
-    { id: 4, title: "AI Governance & Ethics", issuer: "DGA (Thailand Digital Government Academy)", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800" },
-    { id: 5, title: "Getting Started with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800" },
-    { id: 6, title: "Exploring Networking with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" }
+    { id: 1, title: "Software Development with ChatGPT", issuer: "Coursera", img: "/certificates/Coursera 1PKTR4JSW7GW.pdf" },
+    { id: 2, title: "Cybersecurity Foundation", issuer: "NCSA", img: "/certificates/cybersecurity.pdf" },
+    { id: 3, title: "AWS Certified AI Practitioner", issuer: "AWS Training & Certification", img: "/certificates/Official_Practice_Exam_AWS _Certified AI Practitioner(AIF-C01).pdf" },
+    { id: 4, title: "AI Governance & Ethics", issuer: "DGA (Thailand Digital Government Academy)", img: "/certificates/TDGA.pdf" },
+    { id: 5, title: "Getting Started with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "/certificates/Getting_Started_with_Cisco_Packet_Tracer_certificate.pdf" },
+    { id: 6, title: "Exploring Networking with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "/certificates/Exploring_Networking_with_Cisco_Packet_Tracer_certificate.pdf" }
   ];
 
   const techStackData = [
@@ -202,11 +215,11 @@ export default function App() {
     { name: "NodeJS", slug: "nodedotjs", color: "339933" },
     { name: "React", slug: "react", color: "61DAFB" },
     { name: "Tailwind", slug: "tailwindcss", color: "06B6D4" },
-    { name: "NextJS", slug: "nextdotjs", color: "000000" },
+    { name: "NextJS", slug: "nextdotjs", color: "FFFFFF" }, // สีขาว
     { name: "Flutter", slug: "flutter", color: "02569B" },
     { name: "Dart", slug: "dart", color: "0175C2" },
     { name: "Firebase", slug: "firebase", color: "FFCA28" },
-    { name: "GitHub", slug: "github", color: "181717" },
+    { name: "GitHub", slug: "github", color: "FFFFFF" }, // สีขาว
     { name: "Figma", slug: "figma", color: "F24E1E" }
   ];
 
@@ -216,7 +229,7 @@ export default function App() {
       title: "Smart Room Monitoring",
       shortDesc: "ระบบตรวจสอบห้องเรียนอัจฉริยะแบบเรียลไทม์ ด้วยเซ็นเซอร์และ AI",
       fullDesc: "ระบบตรวจสอบห้องเรียนอัจฉริยะแบบเรียลไทม์ ที่เชื่อมต่อข้อมูลจากฮาร์ดแวร์จำลองขึ้นสู่ระบบคลาวด์ แดชบอร์ด และประมวลผลต่อด้วย AI Llama เพื่อประเมินความหนาแน่นและพฤติกรรมผู้ใช้",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
+      image: "/project/Smart_Room_Monitoring_System_1.png",
       theme: "emerald",
       colorHex: "#10b981", 
       badgeTags: ["IoT", "Next.js", "AI Llama"],
@@ -233,7 +246,7 @@ export default function App() {
       title: "Health Screener AI",
       shortDesc: "ระบบ AI แปลผลใบตรวจสุขภาพบนบราวเซอร์ 100%",
       fullDesc: "ระบบ AI Solutions Architect สำหรับอ่าน แปลผล และอธิบายใบตรวจสุขภาพจากรูปถ่ายให้เป็นภาษาง่ายๆ ประมวลผลทุกอย่างบนบราวเซอร์ฝั่งผู้ใช้ 100% เพื่อความปลอดภัยระดับ PDPA",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800",
+      image: "/project/AI_Healthcare_Medical_OCR.JPG",
       theme: "blue",
       colorHex: "#3b82f6",
       badgeTags: ["Vanilla JS", "Gemini AI", "PDPA"],
@@ -249,7 +262,7 @@ export default function App() {
       title: "สำรวย ฟาร์ม Management",
       shortDesc: "ระบบบริหารจัดการข้อมูลฟาร์มกุ้งดิจิทัลครบวงจร",
       fullDesc: "ระบบแอปพลิเคชันบริหารจัดการข้อมูลภายในฟาร์มกุ้งแบบดิจิทัล บันทึก ค้นหา จัดการทรัพยากร พนักงาน บ่อกุ้ง พร้อมระบบ Export รายงานวิเคราะห์กำไร-ขาดทุน",
-      image: "https://images.unsplash.com/photo-1587334274328-64186a80aeee?auto=format&fit=crop&q=80&w=800",
+      image: "/project/Shrimp_Farm_Management.JPG",
       theme: "amber",
       colorHex: "#f59e0b",
       badgeTags: ["Azure", "SQL", "VS IDE"],
@@ -265,7 +278,7 @@ export default function App() {
       title: "Ice Cute Boy: AI Coding",
       shortDesc: "ผู้ช่วยเขียนโค้ดอัจฉริยะที่เชื่อมต่อกับ IDE โดยตรง",
       fullDesc: "ระบบผู้ช่วยเขียนโค้ดอัจฉริยะ (AI Coding Assistant) ที่ผสานโมเดลภาษา LLMs ประสิทธิภาพสูงเข้ากับหน้าต่างการพัฒนาซอฟต์แวร์ เพื่อช่วยเจนเนอเรตและแก้บั๊กโค้ด",
-      image: "https://images.unsplash.com/photo-1655393001768-d946c998b49c?auto=format&fit=crop&q=80&w=800",
+      image: "/project/Ice_Cute_Boy_Hub_AI_Coding_Assistant.png",
       theme: "violet",
       colorHex: "#8b5cf6",
       badgeTags: ["LLMs", "VS Code", "Qwen 2.5"],
@@ -310,50 +323,54 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* --- Project Details Modal --- */}
+      {/* --- Project Details Modal (Magic UI Deep Tech Details) --- */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12 bg-neutral-900/60 backdrop-blur-xl cursor-zoom-out"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12 bg-neutral-900/80 backdrop-blur-xl cursor-zoom-out"
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()} 
-              className="relative max-w-4xl w-full max-h-[90vh] flex flex-col bg-white/90 backdrop-blur-3xl rounded-[2rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.3)] cursor-default border border-white/60"
+              className="relative max-w-4xl w-full max-h-[90vh] flex flex-col bg-neutral-900 border border-neutral-800 rounded-[2rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)] cursor-default"
             >
-              {/* Header Image Area */}
-              <div className="relative h-48 md:h-64 w-full flex-shrink-0">
-                <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
-                <div className={`absolute inset-0 bg-${selectedProject.theme}-900/40 mix-blend-multiply`}></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6 z-10">
-                  <h3 className="font-extrabold text-3xl text-neutral-900 drop-shadow-sm">{selectedProject.title}</h3>
+              {/* Header Image Area with Blurred Backdrop for vertical images */}
+              <div className="relative h-48 md:h-72 w-full flex-shrink-0 bg-neutral-950 overflow-hidden flex items-center justify-center">
+                <div 
+                   className="absolute inset-0 bg-cover bg-center opacity-30 blur-2xl transform scale-110"
+                   style={{ backgroundImage: `url(${selectedProject.image})` }}
+                ></div>
+                <img src={selectedProject.image} alt={selectedProject.title} className="relative z-10 w-full h-full object-contain drop-shadow-2xl" />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent z-10"></div>
+                <div className="absolute bottom-6 left-6 right-6 z-20">
+                  <h3 className="font-extrabold text-3xl text-white drop-shadow-md">{selectedProject.title}</h3>
                 </div>
               </div>
 
               {/* Scrollable Content */}
-              <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-gradient-to-b from-transparent to-neutral-50/50">
-                <p className="text-neutral-600 text-base md:text-lg leading-relaxed mb-8">
+              <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-neutral-900">
+                <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-8">
                   {selectedProject.fullDesc}
                 </p>
                 
-                <h4 className="font-bold text-lg text-neutral-900 mb-6 flex items-center gap-2">
-                  <Layers className={`text-${selectedProject.theme}-500`} size={20} /> 
+                <h4 className="font-bold text-lg text-white mb-6 flex items-center gap-2">
+                  <Layers className={`${themeColors[selectedProject.theme].text}`} size={20} /> 
                   System Architecture Details
                 </h4>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   {selectedProject.architecture.map((arch: any, i: any) => (
-                    <div key={i} className={`bg-white/60 backdrop-blur-md p-5 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:border-${selectedProject.theme}-200 transition-all`}>
-                      <div className={`flex items-center gap-2 mb-3 text-sm font-bold tracking-wide text-${selectedProject.theme}-600`}>
+                    <div key={i} className="bg-neutral-800/50 p-5 rounded-2xl border border-neutral-700/50 hover:border-neutral-600 transition-all">
+                      <div className={`flex items-center gap-2 mb-3 text-sm font-bold tracking-wide ${themeColors[selectedProject.theme].text}`}>
                         {arch.icon} {arch.layer}
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {arch.tech.map((t: string, j: number) => (
-                          <span key={j} className="px-3 py-1.5 bg-white text-neutral-700 text-xs font-semibold rounded-xl border border-neutral-200/60 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                          <span key={j} className="px-3 py-1.5 bg-neutral-950 text-neutral-300 text-xs font-semibold rounded-xl border border-neutral-800">
                             {t}
                           </span>
                         ))}
@@ -363,8 +380,9 @@ export default function App() {
                 </div>
               </div>
               
-              <div className="p-4 md:p-6 bg-white/80 backdrop-blur-xl border-t border-neutral-100 flex justify-center gap-3 flex-shrink-0">
-                 <button onClick={() => setSelectedProject(null)} className="w-full md:w-auto px-12 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
+              {/* Footer Actions */}
+              <div className="p-4 md:p-6 bg-neutral-900 border-t border-neutral-800 flex justify-center gap-3 flex-shrink-0">
+                 <button onClick={() => setSelectedProject(null)} className="w-full md:w-auto px-12 py-3.5 bg-white hover:bg-neutral-200 text-neutral-900 text-sm font-bold rounded-xl transition-all shadow-md active:scale-95">
                     ปิดหน้าต่างรายละเอียด
                  </button>
               </div>
@@ -373,6 +391,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      {/* ---------------- Section 1: Hero ---------------- */}
       <section id="home" className="min-h-screen relative flex items-center justify-center pt-20 overflow-hidden bg-grid-pattern">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-400/10 rounded-full blur-[100px] -z-10 mix-blend-multiply pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-teal-400/10 rounded-full blur-[80px] -z-10 mix-blend-multiply pointer-events-none"></div>
@@ -382,12 +401,12 @@ export default function App() {
             <BlurFade delay={0.1}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-xs font-semibold text-emerald-700 shadow-sm">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span>Hi. Welcome to my portfolio</span>
+                <span>Welcome to my portfolio</span>
               </div>
             </BlurFade>
             <BlurFade delay={0.2}>
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-neutral-900 leading-[1.05]">
-                Sirichok <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-400">Bank</span> <br />Leelathawornkun
+                Sirichok <br />Ban<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-400">k</span> <br />Leelathawornkun
               </h1>
             </BlurFade>
             <BlurFade delay={0.3}>
@@ -409,6 +428,7 @@ export default function App() {
         </motion.div>
       </section>
 
+      {/* ---------------- Section 2: About ---------------- */}
       <section id="about" className="py-24 md:py-32 relative overflow-hidden bg-white border-t border-neutral-100 min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 magic-dots-bg opacity-[0.25]"></div>
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-white via-transparent to-white pointer-events-none"></div>
@@ -453,17 +473,17 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4 items-center transform-gpu">
                 <div className="flex flex-col mt-12">
                   <motion.div animate={{ y: [0, -15, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.05, rotateY: -10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-[3/4] group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] transition-shadow duration-500">
-                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=600" alt="Portrait" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="\images\a1.jpg" alt="Portrait" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-emerald-500/10 transition-colors duration-500"></div>
                   </motion.div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }} whileHover={{ scale: 1.05, rotateY: 10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-square group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.4)] transition-shadow duration-500">
-                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=600" alt="Coding" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="\images\nakorn.jpg" alt="Coding" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-teal-500/10 transition-colors duration-500"></div>
                   </motion.div>
                   <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }} whileHover={{ scale: 1.05, rotateX: 10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-square group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(14,165,233,0.4)] transition-shadow duration-500">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600" alt="Hobby" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="\images\a3.jpg" alt="Hobby" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-sky-500/10 transition-colors duration-500"></div>
                   </motion.div>
                 </div>
@@ -473,125 +493,173 @@ export default function App() {
         </div>
       </section>
 
-      <section id="projects" className="py-32 bg-[#F8FAFC] border-t border-neutral-100 min-h-screen relative overflow-hidden">
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-emerald-400/5 rounded-full blur-[120px] -z-10 pointer-events-none mix-blend-multiply" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-400/5 rounded-full blur-[100px] -z-10 pointer-events-none mix-blend-multiply" />
+      {/* ---------------- Section 3: Portfolio Showcase (Dark Theme) ---------------- */}
+      <section id="projects" className="py-32 bg-neutral-950 border-t border-neutral-900 min-h-screen relative overflow-hidden">
+        {/* Ambient Animated Blobs for Showcase Section */}
+        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[150px] -z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <BlurFade>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-900 mb-4 tracking-tight">Portfolio <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-400">Showcase</span></h2>
-              <p className="text-neutral-500 text-lg">รวบรวมผลงานการพัฒนาซอฟต์แวร์และใบรับรองความสามารถ</p>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Portfolio <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Showcase</span></h2>
+              <p className="text-neutral-400 text-lg">รวบรวมผลงานการพัฒนาซอฟต์แวร์และใบรับรองความสามารถ</p>
             </div>
           </BlurFade>
 
+          {/* --- Tabs --- */}
           <BlurFade delay={0.1} className="flex justify-center mb-16">
-            <div className="flex p-1.5 bg-white/60 backdrop-blur-xl rounded-full border border-neutral-200/60 shadow-sm relative">
+            <div className="flex p-1.5 bg-neutral-900/60 backdrop-blur-xl rounded-full border border-neutral-800 shadow-lg relative">
               {[{ id: 'projects', label: 'Projects', icon: FolderGit2 }, { id: 'certificates', label: 'Certificates', icon: GraduationCap }, { id: 'tech', label: 'Tech Stack', icon: LayoutGrid }].map((tab) => (
                 <button
-                  key={tab.id} onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-full transition-colors z-10 ${activeTab === tab.id ? 'text-emerald-700' : 'text-neutral-500 hover:text-neutral-900'}`}
+                  key={tab.id} onClick={(e) => { 
+                    e.preventDefault(); 
+                    setActiveTab(tab.id); 
+                    e.currentTarget.blur(); // เอาโฟกัสออกจากปุ่ม เบราว์เซอร์จะได้ไม่พยายามเลื่อนจอ
+                  }}
+                  className={`relative flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-full transition-colors z-10 ${activeTab === tab.id ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'}`}
                 >
-                  {activeTab === tab.id && (<motion.div layoutId="showcase-tab" className="absolute inset-0 bg-white rounded-full border border-emerald-100 shadow-sm -z-10" transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }} />)}
+                  {activeTab === tab.id && (<motion.div layoutId="showcase-tab" className="absolute inset-0 bg-neutral-800 rounded-full border border-neutral-700 -z-10" transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }} />)}
                   <tab.icon size={16} /><span>{tab.label}</span>
                 </button>
               ))}
             </div>
           </BlurFade>
 
-          <div className="relative min-h-[500px]">
-            <AnimatePresence mode="wait">
-              {activeTab === 'projects' && (
-                <motion.div key="projects" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }} 
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
-                  {projectsData.map((project, index) => (
-                    <motion.div 
-                      key={project.id}
-                      initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className={`group relative rounded-[2rem] p-[2px] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500`}
-                    >
-                      <div 
-                        className="absolute inset-[-100%] animate-spin-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
-                        style={{ backgroundImage: `conic-gradient(from 90deg at 50% 50%, transparent 0%, ${project.colorHex} 50%, transparent 100%)` }} 
-                      />
-                      <div className="relative h-full w-full bg-white/95 backdrop-blur-xl rounded-[calc(2rem-2px)] flex flex-col z-10 border border-white/50 overflow-hidden">
-                        <div className="relative p-2 pb-0 aspect-video">
-                          <div className="w-full h-full rounded-t-[1.5rem] overflow-hidden relative bg-neutral-100">
-                            <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300"></div>
-                            <div className={`absolute inset-0 bg-${project.theme}-500/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+          {/* --- Content Area (ใช้ Grid Overlap เพื่อป้องกัน Scroll Jump) --- */}
+          <div className="relative w-full pb-20"> 
+            <div className="grid grid-cols-1 grid-rows-1">
+              <AnimatePresence>
+                
+                {/* --- 1. Projects Tab (Card Grid UI) --- */}
+                {activeTab === 'projects' && (
+                  <motion.div 
+                    key="projects" 
+                    initial={{ opacity: 0, filter: "blur(8px)" }} 
+                    animate={{ opacity: 1, filter: "blur(0px)" }} 
+                    exit={{ opacity: 0, filter: "blur(8px)" }} 
+                    transition={{ duration: 0.3 }} 
+                    className="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  >
+                    {projectsData.map((project, index) => (
+                      <motion.div 
+                        key={project.id}
+                        initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className={`group relative rounded-[2rem] p-[2px] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500`}
+                      >
+                        {/* Magic Animated Glow Border on Hover */}
+                        <div 
+                          className="absolute inset-[-100%] animate-spin-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                          style={{ backgroundImage: `conic-gradient(from 90deg at 50% 50%, transparent 0%, ${project.colorHex} 50%, transparent 100%)` }} 
+                        />
+                        
+                        {/* Inner Glass Card (Dark) */}
+                        <div className="relative h-full w-full bg-neutral-900/95 backdrop-blur-xl rounded-[calc(2rem-2px)] flex flex-col z-10 border border-neutral-800 overflow-hidden">
+                          {/* Card Image Header (ล็อคความสูง 240px กันยืด) */}
+                          <div className="relative w-full h-[240px] p-2 pb-0 shrink-0">
+                            <div className="w-full h-full rounded-t-[1.5rem] overflow-hidden relative bg-neutral-950 flex justify-center items-center">
+                              {/* Blurred Background for Image */}
+                              <div 
+                                 className="absolute inset-0 bg-cover bg-center opacity-30 blur-xl transform scale-110"
+                                 style={{ backgroundImage: `url(${project.image})` }}
+                              ></div>
+                              {/* รูปหลักใช้ object-contain จะไม่โดนหั่น */}
+                              <img src={project.image} alt={project.title} className="relative z-10 w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out drop-shadow-lg" />
+                              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-300 z-20 pointer-events-none"></div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="p-6 flex-1 flex flex-col">
-                          <h3 className={`font-bold text-xl text-neutral-900 mb-2 line-clamp-1 group-hover:text-${project.theme}-600 transition-colors`}>{project.title}</h3>
-                          <p className="text-neutral-500 text-sm line-clamp-2 leading-relaxed flex-1">{project.shortDesc}</p>
-                          <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-neutral-100">
-                            {project.badgeTags.map((tag, i) => (
-                              <span key={i} className={`px-2.5 py-1 bg-${project.theme}-50 text-${project.theme}-600 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-${project.theme}-100`}>
-                                {tag}
-                              </span>
-                            ))}
+                          
+                          {/* Card Body */}
+                          <div className="p-6 flex-1 flex flex-col">
+                            <h3 className={`font-bold text-xl text-white mb-2 line-clamp-1 transition-colors ${themeColors[project.theme].hover}`}>{project.title}</h3>
+                            <p className="text-neutral-400 text-sm line-clamp-2 leading-relaxed flex-1">{project.shortDesc}</p>
+                            
+                            {/* Tech Badges */}
+                            <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-neutral-800">
+                              {project.badgeTags.map((tag, i) => (
+                                <span key={i} className={`px-2.5 py-1 ${themeColors[project.theme].bg} ${themeColors[project.theme].text} text-[10px] font-bold uppercase tracking-wider rounded-lg border ${themeColors[project.theme].border}`}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                        <div className="p-4 bg-neutral-50/50 border-t border-neutral-100 mt-auto">
-                          <button onClick={() => setSelectedProject(project)} className="w-full py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors shadow-sm group-hover:shadow-md">
-                            ดูรายละเอียดระบบ <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
 
-              {activeTab === 'certificates' && (
-                <motion.div key="certificates" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {mockCertificates.map((cert, index) => (
-                    <motion.div
-                      key={cert.id} onClick={() => setSelectedCert(cert)} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.1, duration: 0.4 }}
-                      className="group relative bg-white/80 backdrop-blur-md rounded-3xl p-3 border border-neutral-100 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.2)] hover:border-emerald-300 transition-all duration-500 cursor-pointer flex flex-col"
-                    >
-                      <div className="relative aspect-[1.4/1] rounded-2xl overflow-hidden bg-neutral-100 flex items-center justify-center">
-                        <img src={cert.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt={cert.title} />
-                        <div className="absolute inset-0 bg-neutral-900/0 group-hover:bg-neutral-900/10 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100 z-20">
-                          <div className="px-5 py-2.5 bg-white/95 backdrop-blur-md text-emerald-600 text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 flex items-center gap-2"><ExternalLink size={16} /> ดูใบรับรอง</div>
-                        </div>
-                        <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] rounded-2xl pointer-events-none z-10"></div>
-                      </div>
-                      <div className="pt-4 pb-2 px-3">
-                          <h4 className="font-bold text-neutral-900 group-hover:text-emerald-600 transition-colors text-sm line-clamp-1">{cert.title}</h4>
-                          <p className="text-xs text-neutral-400 font-medium mt-1">{cert.issuer}</p>
+                          {/* Card Footer Actions */}
+                          <div className="p-4 bg-neutral-950/50 border-t border-neutral-800 mt-auto">
+                            <button onClick={() => setSelectedProject(project)} className={`w-full py-2.5 bg-neutral-800 text-neutral-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 hover:bg-neutral-700 transition-colors ${themeColors[project.theme].hover}`}>
+                              ดูรายละเอียด <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                            </button>
+                          </div>
                         </div>
                       </motion.div>
                     ))}
                   </motion.div>
                 )}
 
-              {activeTab === 'tech' && (
-                <motion.div key="tech" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }}>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center">
-                    {techStackData.map((tech, i) => (
-                      <motion.div
-                        key={tech.name} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} whileHover={{ y: -5, scale: 1.05 }}
-                        className="tech-card group flex flex-col items-center justify-center p-6 bg-white/60 backdrop-blur-md rounded-3xl border border-neutral-100 shadow-sm hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.15)] hover:border-emerald-100 transition-all duration-300 relative cursor-default"
-                      >
-                        <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-transparent to-white/50 pointer-events-none"></div>
-                        <div className="relative z-10 mb-4 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center h-12 w-12">
-                          <img src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color}`} alt={tech.name} className="w-full h-full object-contain tech-icon-img" />
+                {/* --- 2. Certificates Tab --- */}
+              {activeTab === 'certificates' && (
+                <motion.div 
+                  key="certificates" 
+                  initial={{ opacity: 0, filter: "blur(8px)" }} 
+                  animate={{ opacity: 1, filter: "blur(0px)" }} 
+                  exit={{ opacity: 0, filter: "blur(8px)" }} 
+                  transition={{ duration: 0.3 }} 
+                  className="col-start-1 row-start-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                  {mockCertificates.map((cert, index) => (
+                    <motion.div
+                      key={cert.id} onClick={() => setSelectedCert(cert)} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.1, duration: 0.4 }}
+                      className="group relative bg-neutral-900/80 backdrop-blur-md rounded-3xl p-3 border border-neutral-800 shadow-md hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.2)] hover:border-emerald-500/50 transition-all duration-500 cursor-pointer flex flex-col"
+                    >
+                      <div className="relative aspect-[1.4/1] rounded-2xl overflow-hidden bg-neutral-950 flex items-center justify-center">
+                        <iframe src={`${cert.img}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} className="w-full h-full pointer-events-none group-hover:scale-105 transition-transform duration-700 ease-out border-none" scrolling="no" />
+                        <div className="absolute inset-0 bg-neutral-900/0 group-hover:bg-neutral-900/40 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100 z-20">
+                          <div className="px-5 py-2.5 bg-neutral-900/95 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 flex items-center gap-2"><ExternalLink size={16} /> ดูใบรับรอง</div>
                         </div>
-                        <span className="text-xs font-bold text-neutral-500 group-hover:text-neutral-900 transition-colors relative z-10 tracking-wide text-center">{tech.name}</span>
+                      </div>
+                      <div className="pt-4 pb-2 px-3">
+                          <h4 className="font-bold text-neutral-200 group-hover:text-emerald-400 transition-colors text-sm line-clamp-1">{cert.title}</h4>
+                          <p className="text-xs text-neutral-500 font-medium mt-1">{cert.issuer}</p>
+                        </div>
                       </motion.div>
                     ))}
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
 
-            </AnimatePresence>
+                {/* --- 3. Tech Stack Tab --- */}
+                {activeTab === 'tech' && (
+                  <motion.div 
+                    key="tech" 
+                    initial={{ opacity: 0, filter: "blur(8px)" }} 
+                    animate={{ opacity: 1, filter: "blur(0px)" }} 
+                    exit={{ opacity: 0, filter: "blur(8px)" }} 
+                    transition={{ duration: 0.3 }}
+                    className="col-start-1 row-start-1"
+                  >
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center">
+                      {techStackData.map((tech, i) => (
+                        <motion.div
+                          key={tech.name} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} whileHover={{ y: -5, scale: 1.05 }}
+                          className="tech-card group flex flex-col items-center justify-center p-6 bg-neutral-900/60 backdrop-blur-md rounded-3xl border border-neutral-800 shadow-md hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] hover:border-emerald-500/50 transition-all duration-300 relative cursor-default"
+                        >
+                          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-transparent to-white/5 pointer-events-none"></div>
+                          <div className="relative z-10 mb-4 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center h-12 w-12">
+                            <img src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color}`} alt={tech.name} className="w-full h-full object-contain tech-icon-img" />
+                          </div>
+                          <span className="text-xs font-bold text-neutral-500 group-hover:text-neutral-200 transition-colors relative z-10 tracking-wide text-center">{tech.name}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* ---------------- Section 4: Contact ---------------- */}
       <section id="contact" className="py-32 relative overflow-hidden bg-[#FAFAFA] border-t border-neutral-100 min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/40 via-transparent to-transparent pointer-events-none"></div>
         <div className="absolute inset-0 z-0 magic-dots-bg opacity-[0.15]"></div>
@@ -603,24 +671,32 @@ export default function App() {
             <BlurFade><div className="flex items-center gap-4 mb-6"><div className="w-12 h-px bg-emerald-500"></div><h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-shine pb-2">ติดต่อพูดคุย</h2></div><p className="text-neutral-500 mb-12 text-lg leading-relaxed bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 inline-block shadow-sm">สนใจร่วมงาน หรือมีโปรเจกต์ที่อยากให้ผมช่วยพัฒนา? <br/>กรอกแบบฟอร์มเพื่อส่งข้อความตรงถึงอีเมลของผมได้เลยครับ</p></BlurFade>
             <BlurFade delay={0.1}>
               <div className="space-y-8 pl-2">
+                <div className="flex items-center gap-5 group">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-sm border border-neutral-100 transition-colors duration-300">
+                    <Mail size={20} className="text-neutral-600 group-hover:text-emerald-600 transition-colors duration-300" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] text-neutral-400 font-bold mb-0.5">Email</p>
+                    <p className="font-semibold text-neutral-800">sirichokbank77@gmail.com</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-5 group">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-sm border border-neutral-100 transition-colors duration-300">
+                    <MapPin size={20} className="text-neutral-600 group-hover:text-emerald-600 transition-colors duration-300" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] text-neutral-400 font-bold mb-0.5">Location</p>
+                    <p className="font-semibold text-neutral-800">Bangkok, Thailand</p>
+                  </div>
+                </div>
                 
-                <div className="flex items-center gap-5 group">
-                  <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-sm border border-neutral-100 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-200 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-emerald-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div><Mail size={24} className="text-neutral-600 group-hover:text-emerald-600 relative z-10 group-hover:scale-110 transition-colors transition-transform duration-300" /></div>
-                  <div><p className="text-sm text-neutral-400 font-medium mb-1">Email</p><p className="font-semibold text-xl text-neutral-800">sirichokbank77@gmail.com</p></div>
-                </div>
-
-                <div className="flex items-center gap-5 group">
-                  <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-sm border border-neutral-100 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-200 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-emerald-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div><MapPin size={24} className="text-neutral-600 group-hover:text-emerald-600 relative z-10 group-hover:scale-110 transition-colors transition-transform duration-300" /></div>
-                  <div><p className="text-sm text-neutral-400 font-medium mb-1">Location</p><p className="font-semibold text-xl text-neutral-800">Bangkok, Thailand</p></div>
-                </div>
-
                 <div className="pt-8 border-t border-neutral-200/60">
                   <p className="text-sm text-neutral-400 font-bold uppercase tracking-widest mb-4">Social Media</p>
                   <div className="flex gap-4">
                     <a href="https://github.com/GeorgieSaddddddd" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-neutral-900 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div><div className="relative z-10 group-hover:text-white transition-colors"><GithubIcon size={22} /></div></a>
                     <a href="https://www.facebook.com/bank.sirichok.2024/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-[#1877F2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(24,119,242,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><FacebookIcon size={22} /></div></a>
                     <a href="https://www.instagram.com/b.bank._.77/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-gradient-to-tr from-[#fd5949] to-[#d6249f] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(214,36,159,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><InstagramIcon size={22} /></div></a>
-                    
                   </div>
                 </div>
               </div>
