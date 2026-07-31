@@ -4,7 +4,8 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, AnimatePresence } from 'framer-motion';
-import { Mail, ArrowUpRight, Code2, Cpu, Database, Send, GraduationCap, Award, ExternalLink, FolderGit2, Layers, X, Medal, LayoutGrid, ArrowRight, Sparkles, Server, Activity, ShieldCheck, PlayCircle } from 'lucide-react';
+// นำเข้า MapPin เพิ่มสำหรับไอคอนแผนที่
+import { Mail, MapPin, ArrowUpRight, Code2, Cpu, Database, Send, GraduationCap, Award, ExternalLink, FolderGit2, Layers, X, Medal, LayoutGrid, ArrowRight, Sparkles, Server, Activity, ShieldCheck, PlayCircle } from 'lucide-react';
 
 // --- Custom Social Icons ---
 const GithubIcon = ({ size = 18 }) => (
@@ -122,7 +123,7 @@ const InteractiveBadge = () => {
         </div>
         <div className="w-full h-full relative z-20 overflow-hidden rounded-xl shadow-inner border border-neutral-100">
           <div className="absolute inset-0 bg-emerald-500/10 mix-blend-color z-10 pointer-events-none"></div>
-          <img src="ayutthaya.jpg" alt="Profile" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" alt="Profile" draggable="false" className="w-full h-full object-cover pointer-events-none" />
         </div>
       </motion.div>
     </div>
@@ -163,8 +164,18 @@ export default function App() {
   const [selectedCert, setSelectedCert] = useState<any>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
+  // เพิ่ม useEffect ตัวนี้เข้าไปเพื่อบังคับให้กลับไปบนสุดเวลารีเฟรช
+  useEffect(() => {
+    // ปิดการจำตำแหน่ง scroll ของบราวเซอร์
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    // เลื่อนกลับไปจุดบนสุด
+    window.scrollTo(0, 0);
+  }, []);
+
   const scrollToContact = (e: any) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); };
-const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); };
+  const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault(); setIsSubmitting(true);
@@ -177,12 +188,12 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
   };
 
   const mockCertificates = [
-    { id: 1, title: "Software Development with ChatGPT", issuer: "Coursera", img: "/certificates/Coursera 1PKTR4JSW7GW.pdf" },
-    { id: 2, title: "Cybersecurity Foundation", issuer: "NCSA", img: "/certificates/cybersecurity.pdf" },
-    { id: 3, title: "AWS Certified AI Practitioner", issuer: "AWS Training & Certification", img: "/certificates/Official_Practice_Exam_AWS _Certified AI Practitioner(AIF-C01).pdf" },
-    { id: 4, title: "AI Governance & Ethics", issuer: "DGA (Thailand Digital Government Academy)", img: "/certificates/TDGA.pdf" },
-    { id: 5, title: "Getting Started with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "/certificates/Getting_Started_with_Cisco_Packet_Tracer_certificate.pdf" },
-    { id: 6, title: "Exploring Networking with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "/certificates/Exploring_Networking_with_Cisco_Packet_Tracer_certificate.pdf" }
+    { id: 1, title: "Software Development with ChatGPT", issuer: "Coursera", img: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800" },
+    { id: 2, title: "Cybersecurity Foundation", issuer: "NCSA", img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" },
+    { id: 3, title: "AWS Certified AI Practitioner", issuer: "AWS Training & Certification", img: "https://images.unsplash.com/photo-1523580846011-d3a5ce259640?auto=format&fit=crop&q=80&w=800" },
+    { id: 4, title: "AI Governance & Ethics", issuer: "DGA (Thailand Digital Government Academy)", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800" },
+    { id: 5, title: "Getting Started with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800" },
+    { id: 6, title: "Exploring Networking with Cisco Packet Tracer", issuer: "Cisco Networking Academy", img: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800" }
   ];
 
   const techStackData = [
@@ -205,9 +216,9 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
       title: "Smart Room Monitoring",
       shortDesc: "ระบบตรวจสอบห้องเรียนอัจฉริยะแบบเรียลไทม์ ด้วยเซ็นเซอร์และ AI",
       fullDesc: "ระบบตรวจสอบห้องเรียนอัจฉริยะแบบเรียลไทม์ ที่เชื่อมต่อข้อมูลจากฮาร์ดแวร์จำลองขึ้นสู่ระบบคลาวด์ แดชบอร์ด และประมวลผลต่อด้วย AI Llama เพื่อประเมินความหนาแน่นและพฤติกรรมผู้ใช้",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
       theme: "emerald",
-      colorHex: "#10b981", // For Magic Glow Border
+      colorHex: "#10b981", 
       badgeTags: ["IoT", "Next.js", "AI Llama"],
       architecture: [
         { layer: "Device & Hardware", icon: <Cpu size={16}/>, tech: ["ESP32 DevKit", "DHT22", "Ultrasonic", "Wokwi Simulator", "C/C++"] },
@@ -222,7 +233,7 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
       title: "Health Screener AI",
       shortDesc: "ระบบ AI แปลผลใบตรวจสุขภาพบนบราวเซอร์ 100%",
       fullDesc: "ระบบ AI Solutions Architect สำหรับอ่าน แปลผล และอธิบายใบตรวจสุขภาพจากรูปถ่ายให้เป็นภาษาง่ายๆ ประมวลผลทุกอย่างบนบราวเซอร์ฝั่งผู้ใช้ 100% เพื่อความปลอดภัยระดับ PDPA",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800",
       theme: "blue",
       colorHex: "#3b82f6",
       badgeTags: ["Vanilla JS", "Gemini AI", "PDPA"],
@@ -238,7 +249,7 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
       title: "สำรวย ฟาร์ม Management",
       shortDesc: "ระบบบริหารจัดการข้อมูลฟาร์มกุ้งดิจิทัลครบวงจร",
       fullDesc: "ระบบแอปพลิเคชันบริหารจัดการข้อมูลภายในฟาร์มกุ้งแบบดิจิทัล บันทึก ค้นหา จัดการทรัพยากร พนักงาน บ่อกุ้ง พร้อมระบบ Export รายงานวิเคราะห์กำไร-ขาดทุน",
-      image: "https://images.unsplash.com/photo-1587334274328-64186a80aeee?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1587334274328-64186a80aeee?auto=format&fit=crop&q=80&w=800",
       theme: "amber",
       colorHex: "#f59e0b",
       badgeTags: ["Azure", "SQL", "VS IDE"],
@@ -254,7 +265,7 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
       title: "Ice Cute Boy: AI Coding",
       shortDesc: "ผู้ช่วยเขียนโค้ดอัจฉริยะที่เชื่อมต่อกับ IDE โดยตรง",
       fullDesc: "ระบบผู้ช่วยเขียนโค้ดอัจฉริยะ (AI Coding Assistant) ที่ผสานโมเดลภาษา LLMs ประสิทธิภาพสูงเข้ากับหน้าต่างการพัฒนาซอฟต์แวร์ เพื่อช่วยเจนเนอเรตและแก้บั๊กโค้ด",
-      image: "https://images.unsplash.com/photo-1655393001768-d946c998b49c?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1655393001768-d946c998b49c?auto=format&fit=crop&q=80&w=800",
       theme: "violet",
       colorHex: "#8b5cf6",
       badgeTags: ["LLMs", "VS Code", "Qwen 2.5"],
@@ -299,7 +310,7 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
         )}
       </AnimatePresence>
 
-      {/* --- Project Details Modal (Magic UI Deep Tech Details) --- */}
+      {/* --- Project Details Modal --- */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div 
@@ -342,17 +353,16 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {arch.tech.map((t: string, j: number) => (
-  <span key={j} className="px-3 py-1.5 bg-white text-neutral-700 text-xs font-semibold rounded-xl border border-neutral-200/60 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
-    {t}
-  </span>
-))}
+                          <span key={j} className="px-3 py-1.5 bg-white text-neutral-700 text-xs font-semibold rounded-xl border border-neutral-200/60 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                            {t}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
               
-              {/* Footer Actions (Centered Button, No Demo Link) */}
               <div className="p-4 md:p-6 bg-white/80 backdrop-blur-xl border-t border-neutral-100 flex justify-center gap-3 flex-shrink-0">
                  <button onClick={() => setSelectedProject(null)} className="w-full md:w-auto px-12 py-3.5 bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95">
                     ปิดหน้าต่างรายละเอียด
@@ -363,7 +373,6 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
         )}
       </AnimatePresence>
 
-      {/* ---------------- Section 1: Hero ---------------- */}
       <section id="home" className="min-h-screen relative flex items-center justify-center pt-20 overflow-hidden bg-grid-pattern">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-400/10 rounded-full blur-[100px] -z-10 mix-blend-multiply pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-teal-400/10 rounded-full blur-[80px] -z-10 mix-blend-multiply pointer-events-none"></div>
@@ -400,7 +409,6 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
         </motion.div>
       </section>
 
-      {/* ---------------- Section 2: About ---------------- */}
       <section id="about" className="py-24 md:py-32 relative overflow-hidden bg-white border-t border-neutral-100 min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 magic-dots-bg opacity-[0.25]"></div>
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-white via-transparent to-white pointer-events-none"></div>
@@ -445,17 +453,17 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
               <div className="grid grid-cols-2 gap-4 items-center transform-gpu">
                 <div className="flex flex-col mt-12">
                   <motion.div animate={{ y: [0, -15, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} whileHover={{ scale: 1.05, rotateY: -10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-[3/4] group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] transition-shadow duration-500">
-                    <img src="b.jpg" alt="Portrait" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=600" alt="Portrait" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-emerald-500/10 transition-colors duration-500"></div>
                   </motion.div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }} whileHover={{ scale: 1.05, rotateY: 10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-square group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.4)] transition-shadow duration-500">
-                    <img src="d.jpg" alt="Coding" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=600" alt="Coding" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-teal-500/10 transition-colors duration-500"></div>
                   </motion.div>
                   <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }} whileHover={{ scale: 1.05, rotateX: 10, z: 20 }} className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-neutral-100 aspect-square group cursor-pointer border border-white/40 hover:shadow-[0_20px_40px_-10px_rgba(14,165,233,0.4)] transition-shadow duration-500">
-                    <img src="n.jpg" alt="Hobby" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600" alt="Hobby" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                     <div className="absolute inset-0 rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.2)] z-20 pointer-events-none group-hover:bg-sky-500/10 transition-colors duration-500"></div>
                   </motion.div>
                 </div>
@@ -465,9 +473,7 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
         </div>
       </section>
 
-      {/* ---------------- Section 3: Portfolio Showcase ---------------- */}
       <section id="projects" className="py-32 bg-[#F8FAFC] border-t border-neutral-100 min-h-screen relative overflow-hidden">
-        {/* Ambient Animated Blobs for Showcase Section */}
         <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-emerald-400/5 rounded-full blur-[120px] -z-10 pointer-events-none mix-blend-multiply" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-400/5 rounded-full blur-[100px] -z-10 pointer-events-none mix-blend-multiply" />
 
@@ -479,7 +485,6 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
             </div>
           </BlurFade>
 
-          {/* --- Tabs --- */}
           <BlurFade delay={0.1} className="flex justify-center mb-16">
             <div className="flex p-1.5 bg-white/60 backdrop-blur-xl rounded-full border border-neutral-200/60 shadow-sm relative">
               {[{ id: 'projects', label: 'Projects', icon: FolderGit2 }, { id: 'certificates', label: 'Certificates', icon: GraduationCap }, { id: 'tech', label: 'Tech Stack', icon: LayoutGrid }].map((tab) => (
@@ -494,11 +499,8 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
             </div>
           </BlurFade>
 
-          {/* --- Content Area --- */}
           <div className="relative min-h-[500px]">
             <AnimatePresence mode="wait">
-              
-              {/* --- 1. Projects Tab (Card Grid UI) --- */}
               {activeTab === 'projects' && (
                 <motion.div key="projects" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }} 
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -509,30 +511,21 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
                       initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}
                       className={`group relative rounded-[2rem] p-[2px] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500`}
                     >
-                      {/* Magic Animated Glow Border on Hover */}
                       <div 
                         className="absolute inset-[-100%] animate-spin-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
                         style={{ backgroundImage: `conic-gradient(from 90deg at 50% 50%, transparent 0%, ${project.colorHex} 50%, transparent 100%)` }} 
                       />
-                      
-                      {/* Inner Glass Card */}
                       <div className="relative h-full w-full bg-white/95 backdrop-blur-xl rounded-[calc(2rem-2px)] flex flex-col z-10 border border-white/50 overflow-hidden">
-                        {/* Card Image Header */}
                         <div className="relative p-2 pb-0 aspect-video">
                           <div className="w-full h-full rounded-t-[1.5rem] overflow-hidden relative bg-neutral-100">
                             <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300"></div>
-                            {/* Color Overlay Hint */}
                             <div className={`absolute inset-0 bg-${project.theme}-500/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                           </div>
                         </div>
-                        
-                        {/* Card Body */}
                         <div className="p-6 flex-1 flex flex-col">
                           <h3 className={`font-bold text-xl text-neutral-900 mb-2 line-clamp-1 group-hover:text-${project.theme}-600 transition-colors`}>{project.title}</h3>
                           <p className="text-neutral-500 text-sm line-clamp-2 leading-relaxed flex-1">{project.shortDesc}</p>
-                          
-                          {/* Tech Badges */}
                           <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-neutral-100">
                             {project.badgeTags.map((tag, i) => (
                               <span key={i} className={`px-2.5 py-1 bg-${project.theme}-50 text-${project.theme}-600 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-${project.theme}-100`}>
@@ -541,8 +534,6 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
                             ))}
                           </div>
                         </div>
-
-                        {/* Card Footer Actions (Full Width Details Button) */}
                         <div className="p-4 bg-neutral-50/50 border-t border-neutral-100 mt-auto">
                           <button onClick={() => setSelectedProject(project)} className="w-full py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors shadow-sm group-hover:shadow-md">
                             ดูรายละเอียดระบบ <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -554,31 +545,29 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
                 </motion.div>
               )}
 
-              {/* --- 2. Certificates Tab --- */}
-            {activeTab === 'certificates' && (
-              <motion.div key="certificates" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mockCertificates.map((cert, index) => (
-                  <motion.div
-                    key={cert.id} onClick={() => setSelectedCert(cert)} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.1, duration: 0.4 }}
-                    className="group relative bg-white/80 backdrop-blur-md rounded-3xl p-3 border border-neutral-100 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.2)] hover:border-emerald-300 transition-all duration-500 cursor-pointer flex flex-col"
-                  >
-                    <div className="relative aspect-[1.4/1] rounded-2xl overflow-hidden bg-neutral-100 flex items-center justify-center">
-                      <iframe src={`${cert.img}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} className="w-full h-full pointer-events-none group-hover:scale-105 transition-transform duration-700 ease-out border-none" scrolling="no" />
-                      <div className="absolute inset-0 bg-neutral-900/0 group-hover:bg-neutral-900/10 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100 z-20">
-                        <div className="px-5 py-2.5 bg-white/95 backdrop-blur-md text-emerald-600 text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 flex items-center gap-2"><ExternalLink size={16} /> ดูใบรับรอง</div>
+              {activeTab === 'certificates' && (
+                <motion.div key="certificates" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {mockCertificates.map((cert, index) => (
+                    <motion.div
+                      key={cert.id} onClick={() => setSelectedCert(cert)} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: index * 0.1, duration: 0.4 }}
+                      className="group relative bg-white/80 backdrop-blur-md rounded-3xl p-3 border border-neutral-100 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.2)] hover:border-emerald-300 transition-all duration-500 cursor-pointer flex flex-col"
+                    >
+                      <div className="relative aspect-[1.4/1] rounded-2xl overflow-hidden bg-neutral-100 flex items-center justify-center">
+                        <img src={cert.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt={cert.title} />
+                        <div className="absolute inset-0 bg-neutral-900/0 group-hover:bg-neutral-900/10 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100 z-20">
+                          <div className="px-5 py-2.5 bg-white/95 backdrop-blur-md text-emerald-600 text-sm font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 flex items-center gap-2"><ExternalLink size={16} /> ดูใบรับรอง</div>
+                        </div>
+                        <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] rounded-2xl pointer-events-none z-10"></div>
                       </div>
-                      <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] rounded-2xl pointer-events-none z-10"></div>
-                    </div>
-                    <div className="pt-4 pb-2 px-3">
-                        <h4 className="font-bold text-neutral-900 group-hover:text-emerald-600 transition-colors text-sm line-clamp-1">{cert.title}</h4>
-                        <p className="text-xs text-neutral-400 font-medium mt-1">{cert.issuer}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
+                      <div className="pt-4 pb-2 px-3">
+                          <h4 className="font-bold text-neutral-900 group-hover:text-emerald-600 transition-colors text-sm line-clamp-1">{cert.title}</h4>
+                          <p className="text-xs text-neutral-400 font-medium mt-1">{cert.issuer}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
 
-              {/* --- 3. Tech Stack Tab --- */}
               {activeTab === 'tech' && (
                 <motion.div key="tech" initial={{ opacity: 0, y: 20, filter: "blur(5px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -20, filter: "blur(5px)" }} transition={{ duration: 0.4 }}>
                   <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center">
@@ -603,7 +592,6 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
         </div>
       </section>
 
-      {/* ---------------- Section 4: Contact ---------------- */}
       <section id="contact" className="py-32 relative overflow-hidden bg-[#FAFAFA] border-t border-neutral-100 min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/40 via-transparent to-transparent pointer-events-none"></div>
         <div className="absolute inset-0 z-0 magic-dots-bg opacity-[0.15]"></div>
@@ -615,10 +603,17 @@ const scrollToProjects = (e: any) => { e.preventDefault(); document.getElementBy
             <BlurFade><div className="flex items-center gap-4 mb-6"><div className="w-12 h-px bg-emerald-500"></div><h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-shine pb-2">ติดต่อพูดคุย</h2></div><p className="text-neutral-500 mb-12 text-lg leading-relaxed bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 inline-block shadow-sm">สนใจร่วมงาน หรือมีโปรเจกต์ที่อยากให้ผมช่วยพัฒนา? <br/>กรอกแบบฟอร์มเพื่อส่งข้อความตรงถึงอีเมลของผมได้เลยครับ</p></BlurFade>
             <BlurFade delay={0.1}>
               <div className="space-y-8 pl-2">
+                
                 <div className="flex items-center gap-5 group">
-                  <div className="relative flex items-center justify-center w-14 h-14 rounded-2xl bg-white shadow-sm border border-neutral-100 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-200 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-emerald-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div><Mail size={24} className="text-emerald-600 relative z-10 group-hover:scale-110 transition-transform duration-300" /></div>
-                  <div><p className="text-sm text-neutral-400 font-bold uppercase tracking-widest mb-1">Email</p><p className="font-semibold text-xl text-neutral-800">sirichokbank77@gmail.com</p></div>
+                  <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-sm border border-neutral-100 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-200 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-emerald-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div><Mail size={24} className="text-neutral-600 group-hover:text-emerald-600 relative z-10 group-hover:scale-110 transition-colors transition-transform duration-300" /></div>
+                  <div><p className="text-sm text-neutral-400 font-medium mb-1">Email</p><p className="font-semibold text-xl text-neutral-800">sirichokbank77@gmail.com</p></div>
                 </div>
+
+                <div className="flex items-center gap-5 group">
+                  <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-sm border border-neutral-100 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-200 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-emerald-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div><MapPin size={24} className="text-neutral-600 group-hover:text-emerald-600 relative z-10 group-hover:scale-110 transition-colors transition-transform duration-300" /></div>
+                  <div><p className="text-sm text-neutral-400 font-medium mb-1">Location</p><p className="font-semibold text-xl text-neutral-800">Bangkok, Thailand</p></div>
+                </div>
+
                 <div className="pt-8 border-t border-neutral-200/60">
                   <p className="text-sm text-neutral-400 font-bold uppercase tracking-widest mb-4">Social Media</p>
                   <div className="flex gap-4">
