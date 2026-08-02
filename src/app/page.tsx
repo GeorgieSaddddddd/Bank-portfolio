@@ -175,7 +175,7 @@ export default function App() {
 
   // Restore scroll to top on page refresh
   useEffect(() => {
-    if ('scrollRestoration' in history) {
+    if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
@@ -291,6 +291,24 @@ export default function App() {
         { layer: "Orchestration", icon: <Server size={16}/>, tech: ["Model Routing Logic", "Task Allocation"] },
         { layer: "Optimization", icon: <Cpu size={16}/>, tech: ["Prompt Optimization", "Context Engineering", "Syntax Enforcement"] }
       ]
+    },
+    {
+      id: "p5",
+      title: "TrashSeeker",
+      shortDesc: "เว็บแอปติดตามและตรวจจับขยะจากกล้องด้วย AI YOLO",
+      fullDesc: "เว็บแอปพลิเคชันสำหรับติดตามและตรวจจับขยะจากกล้องในหลายสถานที่ โดยเชื่อมต่อกับ TrashTrack API และโมเดล YOLO รองรับการเพิ่ม/แก้ไข/ลบสถานที่และกล้อง การสแกนกล้องเพื่อหาขยะอัตโนมัติ และการแสดงผลภาพพร้อม bounding box จาก AI",
+      image: "/project/Trash-seeker.png", // Placeholder image, replace with actual if available
+      theme: "emerald", // Using emerald to match the AI/Detection vibe
+      colorHex: "#10b981",
+      badgeTags: ["Next.js", "FastAPI", "YOLO AI"],
+      githubLink: "https://github.com/Lostinyss/trash-seeker", // Link to GitHub
+      liveLink: "https://lostinyss.github.io/trash-seeker/", // Link to Live Demo
+      architecture: [
+        { layer: "Frontend & UI", icon: <Code2 size={16}/>, tech: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+        { layer: "Backend API", icon: <Server size={16}/>, tech: ["TrashTrack FastAPI", "Cloudflare Workers", "Proxy Support"] },
+        { layer: "AI Detection Engine", icon: <Sparkles size={16}/>, tech: ["YOLO Object Detection", "Realtime Scanning", "Bounding Box Rendering"] },
+        { layer: "Features", icon: <Activity size={16}/>, tech: ["Auto-scan (10m)", "RTSP/URL Cam Support", "Role Management"] }
+      ]
     }
   ];
 
@@ -391,6 +409,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      {}
       {/* ---------------- Section 1: Hero ---------------- */}
       <section id="home" className="min-h-screen relative flex items-center justify-center pt-20 overflow-hidden bg-grid-pattern">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-400/10 rounded-full blur-[100px] -z-10 mix-blend-multiply pointer-events-none"></div>
@@ -428,6 +447,7 @@ export default function App() {
         </motion.div>
       </section>
 
+      {}
       {/* ---------------- Section 2: About ---------------- */}
       <section id="about" className="py-24 md:py-32 relative overflow-hidden bg-white min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 magic-dots-bg opacity-[0.25]"></div>
@@ -488,6 +508,7 @@ export default function App() {
         </div>
       </section>
 
+      {}
       {/* ---------------- Section 3: Portfolio Showcase (Dark Theme) ---------------- */}
       <section id="projects" className="py-32 bg-[#09090b] min-h-screen relative overflow-hidden text-white">
         {/* Ambient Dark Mode Glows */}
@@ -557,11 +578,27 @@ export default function App() {
                             ))}
                           </div>
                         </div>
-
-                        <div className="p-4 bg-neutral-950/50 border-t border-neutral-800 mt-auto">
+                        
+                        <div className="p-4 bg-neutral-950/50 border-t border-neutral-800 mt-auto flex flex-col gap-2">
                           <button onClick={() => setSelectedProject(project)} className="w-full py-2.5 bg-neutral-800 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 hover:bg-neutral-700 transition-colors shadow-sm">
                             ดูรายละเอียด <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                           </button>
+                          
+                          {/* Links Container */}
+                          {(project.githubLink || project.liveLink) && (
+                            <div className="flex gap-2">
+                               {project.githubLink && (
+                                  <a href={project.githubLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="flex-1 py-2 bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 hover:bg-neutral-800 hover:text-white transition-colors">
+                                    <GithubIcon size={14} /> GitHub
+                                  </a>
+                               )}
+                               {project.liveLink && (
+                                  <a href={project.liveLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className={`flex-1 py-2 bg-${project.theme}-900/30 border border-${project.theme}-500/30 text-${project.theme}-400 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 hover:bg-${project.theme}-900/50 hover:text-${project.theme}-300 transition-colors`}>
+                                    <ExternalLink size={14} /> Live Demo
+                                  </a>
+                               )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -615,6 +652,7 @@ export default function App() {
         </div>
       </section>
 
+      {}
       {/* ---------------- Section 4: Contact ---------------- */}
       <section id="contact" className="py-32 relative overflow-hidden bg-white min-h-screen flex items-center">
         <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-100/40 via-transparent to-transparent pointer-events-none"></div>
@@ -667,6 +705,7 @@ export default function App() {
         </div>
       </section>
       
+      {}
       <footer className="py-8 text-center text-neutral-400 text-sm border-t border-neutral-100 bg-white">
           <p>© {new Date().getFullYear()} Sirichok Leelathawornkun. All rights reserved.</p>
       </footer>
