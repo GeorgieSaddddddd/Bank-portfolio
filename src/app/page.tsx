@@ -300,7 +300,7 @@ export default function App() {
       title: "TrashSeeker",
       shortDesc: "เว็บแอปติดตามและตรวจจับขยะจากกล้องด้วย AI YOLO",
       fullDesc: "เว็บแอปพลิเคชันสำหรับติดตามและตรวจจับขยะจากกล้องในหลายสถานที่ โดยเชื่อมต่อกับ TrashTrack API และโมเดล YOLO รองรับการเพิ่ม/แก้ไข/ลบสถานที่และกล้อง การสแกนกล้องเพื่อหาขยะอัตโนมัติ และการแสดงผลภาพพร้อม bounding box จาก AI",
-      image: "https://via.placeholder.com/600x400/1e293b/10b981?text=TrashSeeker", // Placeholder image, replace with actual if available
+      image: "/project/Trash-seeker.png", // Placeholder image, replace with actual if available
       theme: "emerald", // Using emerald to match the AI/Detection vibe
       colorHex: "#10b981",
       badgeTags: ["Next.js", "FastAPI", "YOLO AI"],
@@ -379,14 +379,14 @@ export default function App() {
                 </p>
                 
                 <h4 className="font-bold text-lg text-white mb-6 flex items-center gap-2">
-                  <Layers className={`text-${selectedProject.theme}-400`} size={20} /> 
+                  <Layers className="text-neutral-400" size={20} style={{ color: selectedProject.colorHex }} /> 
                   System Architecture Details
                 </h4>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   {selectedProject.architecture.map((arch: any, i: any) => (
-                    <div key={i} className={`bg-neutral-900/80 p-5 rounded-2xl border border-neutral-800 shadow-sm hover:border-${selectedProject.theme}-500/50 transition-all`}>
-                      <div className={`flex items-center gap-2 mb-3 text-sm font-bold tracking-wide text-${selectedProject.theme}-400`}>
+                    <div key={i} className="bg-neutral-900/80 p-5 rounded-2xl border border-neutral-800 shadow-sm hover:border-neutral-600 transition-all">
+                      <div className="flex items-center gap-2 mb-3 text-sm font-bold tracking-wide" style={{ color: selectedProject.colorHex }}>
                         {arch.icon} {arch.layer}
                       </div>
                       <div className="flex flex-wrap gap-2">
@@ -677,9 +677,9 @@ export default function App() {
                   <p className="text-sm text-neutral-400 font-bold uppercase tracking-widest mb-4">Social Media</p>
                   <div className="flex gap-4">
                     <a href="https://github.com/GeorgieSaddddddd" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-neutral-900 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div><div className="relative z-10 group-hover:text-white transition-colors"><GithubIcon size={22} /></div></a>
-                    <a href="https://www.linkedin.com/in/sirichok-leelathawornkun-7716b7433/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-[#0A66C2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(10,102,194,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><LinkedinIcon size={22} /></div></a>
                     <a href="https://www.facebook.com/bank.sirichok.2024/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-[#1877F2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(24,119,242,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><FacebookIcon size={22} /></div></a>
                     <a href="https://www.instagram.com/b.bank._.77/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-gradient-to-tr from-[#fd5949] to-[#d6249f] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(214,36,159,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><InstagramIcon size={22} /></div></a>
+                    <a href="https://www.linkedin.com/in/sirichok-leelathawornkun-7716b7433/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-[#0A66C2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(10,102,194,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><LinkedinIcon size={22} /></div></a>
                   </div>
                 </div>
               </div>
