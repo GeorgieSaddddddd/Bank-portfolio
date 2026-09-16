@@ -16,6 +16,9 @@ const FacebookIcon = ({ size = 18 }) => (
 const InstagramIcon = ({ size = 18 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
 );
+const LinkedinIcon = ({ size = 18 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+);
 
 const GlobalStyles = () => (
   <style>{`
@@ -297,7 +300,7 @@ export default function App() {
       title: "TrashSeeker",
       shortDesc: "เว็บแอปติดตามและตรวจจับขยะจากกล้องด้วย AI YOLO",
       fullDesc: "เว็บแอปพลิเคชันสำหรับติดตามและตรวจจับขยะจากกล้องในหลายสถานที่ โดยเชื่อมต่อกับ TrashTrack API และโมเดล YOLO รองรับการเพิ่ม/แก้ไข/ลบสถานที่และกล้อง การสแกนกล้องเพื่อหาขยะอัตโนมัติ และการแสดงผลภาพพร้อม bounding box จาก AI",
-      image: "/project/Trash-seeker.png", // Placeholder image, replace with actual if available
+      image: "https://via.placeholder.com/600x400/1e293b/10b981?text=TrashSeeker", // Placeholder image, replace with actual if available
       theme: "emerald", // Using emerald to match the AI/Detection vibe
       colorHex: "#10b981",
       badgeTags: ["Next.js", "FastAPI", "YOLO AI"],
@@ -482,7 +485,7 @@ export default function App() {
                     <div className="absolute inset-[-100%] animate-spin-slow bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,#0ea5e9_50%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="relative h-full w-full bg-white/90 backdrop-blur-xl rounded-[2rem] p-6 flex flex-col justify-center gap-4 z-10 border border-white/50 group-hover:bg-white/95 transition-colors">
                       <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner"><Award size={28} /></div>
-                      <div><p className="text-xs text-neutral-400 font-bold uppercase tracking-widest mb-1">GPA</p><p className="text-xl font-bold text-neutral-900 leading-tight flex items-baseline gap-1.5">3.65</p></div>
+                      <div><p className="text-xs text-neutral-400 font-bold uppercase tracking-widest mb-1">GPA</p><p className="text-xl font-bold text-neutral-900 leading-tight flex items-baseline gap-1.5">3.63</p></div>
                     </div>
                 </div>
               </BlurFade>
@@ -674,6 +677,7 @@ export default function App() {
                   <p className="text-sm text-neutral-400 font-bold uppercase tracking-widest mb-4">Social Media</p>
                   <div className="flex gap-4">
                     <a href="https://github.com/GeorgieSaddddddd" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-neutral-900 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div><div className="relative z-10 group-hover:text-white transition-colors"><GithubIcon size={22} /></div></a>
+                    <a href="https://www.linkedin.com/in/sirichok-leelathawornkun-7716b7433/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-[#0A66C2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(10,102,194,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><LinkedinIcon size={22} /></div></a>
                     <a href="https://www.facebook.com/bank.sirichok.2024/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300"><div className="absolute inset-0 bg-[#1877F2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(24,119,242,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><FacebookIcon size={22} /></div></a>
                     <a href="https://www.instagram.com/b.bank._.77/" target="_blank" rel="noopener noreferrer" className="relative group w-12 h-12 bg-white rounded-2xl shadow-sm border border-neutral-100 flex items-center justify-center text-neutral-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden"><div className="absolute inset-0 bg-gradient-to-tr from-[#fd5949] to-[#d6249f] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_20px_-10px_rgba(214,36,159,0.5)]"></div><div className="relative z-10 group-hover:text-white transition-colors"><InstagramIcon size={22} /></div></a>
                   </div>
